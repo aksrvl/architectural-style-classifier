@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">        
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Architectural Style Classifier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:      #0d0d0d;
+            --surface: #141414;
+            --border:  #2a2a2a;
+            --text:    #e8e4dc;
+            --muted:   #555;
+            --accent:  #c8b89a;
+            --accent2: #8a7a66;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+            display: grid;
+            min-height: 100vh;
+            grid-template-rows: auto 1fr auto;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+        }
+
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.1rem;
+        }
+
+        .logo-tag {
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        main {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .panel-left {
+            border-right: 1px solid var(--border);
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .panel-right {
+            padding: 48px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+        }
+
+
+    </style>
+</head>
+<body>
+    <header>
+        <span class ="logo">Architectural Style Classifier</span>
+        <span class="logo-tag">· Polina Vladymyrska · Kyiv-Mohyla Academy thesis · CNN</span>
+    </header>
+
+    <main>
+        <div class="panel-left">
+
+
+        </div>
+
+        <div class="panel-right">
+
+        </div>
+
+    </main>
+
+    <footer>
+        <span >Convolutional Neural Networks for Architectural Style Recognition · 2026 · Bachelor's 3rd year</span>
+    </footer>
+</body>
+</html>
