@@ -211,16 +211,6 @@
             margin-bottom: 14px;
         }
 
-        .gradcam-section {
-            display: flex;
-            flex-direction: column;
-        }
-
-        #gradcam-img {
-            width: 100%;
-            border-radius: 2px;
-        }
-
         .btn-reset {
             background: none;
             border: 1px solid var(--border);
@@ -237,6 +227,41 @@
         }
 
         .btn-reset:hover { border-color: var(--accent2); color: var(--text); }
+
+        .pred-bar-track {
+            height: 1px;
+            background: var(--border);
+            margin-top: 8px;
+            position: relative;
+        }
+
+        .pred-bar-fill {
+            position: absolute;
+            inset: 0;
+            background: var(--accent);
+        }
+
+        .pred-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .pred-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+
+        .pred-name {
+            font-family: 'DM Serif Display', serif;
+        }
+
+        .pred-confidence {
+            color: var(--muted);
+            font-family: 'DM Mono', monospace;
+        }
 
     </style>
 </head>
@@ -275,11 +300,6 @@
                     <div class="predictions-list" id="predictions-list"></div>
                 </div>
 
-                <div class="gradcam-section" id="gradcam-section">
-                    <div class="panel-label">Grad-CAM Visualization</div>
-                    <img id="gradcam-img" src="" alt="gradcam" />
-                </div>
-
                 <button class="btn-reset" id="reset-btn">new image</button>
             </div>
         </div>
@@ -300,7 +320,6 @@
         const spinner = document.getElementById('spinner');
         const resultsWrap = document.getElementById('results-wrap');
         const predictionsList = document.getElementById('predictions-list');
-        const gradcamImg = document.getElementById('gradcam-img');
         const resetBtn = document.getElementById('reset-btn');
 
         let selectedFile = null;
@@ -335,6 +354,26 @@
             uploadZone.style.borderColor = 'var(--border)';
         });
 
+        function renderResults(data) {
+            predictionsList.innerHTML = '';
+            resultsWrap.style.display = 'flex';
+
+            data.top_predictions.forEach((prediction, index) => {
+                const item = document.createElement('div');
+                item.className = 'pred-item';
+                item.innerHTML = `
+                    <div class="pred-header">
+                        <span class="pred-name">${prediction.style}</span>
+                        <span class="pred-confidence">${prediction.confidence}%</span>
+                    </div>
+                    <div class="pred-bar-track">
+                        <div class="pred-bar-fill" style="width: ${prediction.confidence}%"></div>
+                    </div>
+                `;
+                predictionsList.appendChild(item);
+            })
+        }
+
         classifyBtn.addEventListener('click', async () => {
             if (!selectedFile) return;
 
@@ -342,7 +381,34 @@
             classifyBtn.disabled = true;
             spinner.style.display = 'flex';
 
-            
+            const form = new FormData();
+            form.append('file', selectedFile);
+
+            let resp;
+            try {
+                resp = await fetch('/predict', {
+                    method: 'POST',
+                    body: form
+                });
+                const data = await resp.json();
+                renderResults(data);
+            } catch (e) {
+                console.log(e);
+            } finally {
+                classifyBtn.disabled = false;
+                spinner.style.display = 'none';
+            }
+        });
+
+        resetBtn.addEventListener('click', () => {
+            selectedFile = null;
+            previewImg.src = '';
+            previewImg.style.display = 'none';
+            uploadInner.style.display = 'flex';
+            classifyBtn.style.display = 'none';
+            resultsWrap.style.display = 'none';
+            idleState.style.display = 'flex';
+            fileInput.value = '';
         });
     </script>
 </body>
