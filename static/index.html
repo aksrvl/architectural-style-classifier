@@ -289,5 +289,61 @@
     <footer>
         <span >Convolutional Neural Networks for Architectural Style Recognition · 2026 · Bachelor's 3rd year</span>
     </footer>
+
+    <script>
+        const uploadZone = document.getElementById('upload-zone');
+        const uploadInner = document.getElementById('upload-inner');
+        const fileInput = document.getElementById('file-input');
+        const previewImg = document.getElementById('preview-img');
+        const classifyBtn = document.getElementById('classify-btn');
+        const idleState = document.getElementById('idle-state');
+        const spinner = document.getElementById('spinner');
+        const resultsWrap = document.getElementById('results-wrap');
+        const predictionsList = document.getElementById('predictions-list');
+        const gradcamImg = document.getElementById('gradcam-img');
+        const resetBtn = document.getElementById('reset-btn');
+
+        let selectedFile = null;
+
+        function handleFile(file) {
+            if (file) {
+                selectedFile = file;
+                const url = URL.createObjectURL(file);
+                previewImg.src = url;
+                previewImg.style.display = 'block';
+                uploadInner.style.display = 'none';
+                classifyBtn.style.display = 'block';
+            }
+        }
+
+        fileInput.addEventListener('change', () => {
+            handleFile(fileInput.files[0])
+        });
+
+        uploadZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadZone.style.borderColor = 'var(--accent2)';
+        });
+
+        uploadZone.addEventListener('dragleave', () => {
+            uploadZone.style.borderColor = 'var(--border)';
+        });
+
+        uploadZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            handleFile(e.dataTransfer.files[0]);
+            uploadZone.style.borderColor = 'var(--border)';
+        });
+
+        classifyBtn.addEventListener('click', async () => {
+            if (!selectedFile) return;
+
+            idleState.style.display = 'none';
+            classifyBtn.disabled = true;
+            spinner.style.display = 'flex';
+
+            
+        });
+    </script>
 </body>
 </html>
