@@ -212,18 +212,20 @@
         }
 
         .btn-reset {
+            width: 100%;
+            padding: 15px;
             background: none;
             border: 1px solid var(--border);
             color: var(--muted);
-            font-family: 'DM Mono', monospace;
-            font-size: 0.62rem;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            padding: 10px 14px;
-            cursor: pointer;
             border-radius: 2px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            align-self: flex-end;
+            border-radius: 2px;
+            text-transform: uppercase;
             transition: border-color 0.2s, color 0.2s;
-            align-self: flex-start;
+            font-family: 'DM Mono', monospace;
+
         }
 
         .btn-reset:hover { border-color: var(--accent2); color: var(--text); }
@@ -261,6 +263,52 @@
         .pred-confidence {
             color: var(--muted);
             font-family: 'DM Mono', monospace;
+        }
+
+        .about-slider {
+            border-top: 1px solid var(--border);
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .slider-wrap {
+            flex: 1;
+            overflow: hidden;
+        }
+
+        .slide {
+            display: none;
+        }
+
+        .slide.active {
+            display: block;
+        }
+
+        .slide p {
+            font-size: 0.85rem;
+            line-height: 1.8;
+            color: var(--text);
+            margin-top: 10px;
+        }
+
+        .slider-btn {
+            background: none;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'DM Mono', monospace;
+            font-size: 1rem;
+            padding: 10px 16px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: border-color 0.2s, color 0.2s;
+            flex-shrink: 0;
+        }
+
+        .slider-btn:hover {
+            border-color: var(--accent2);
+            color: var(--text);
         }
 
     </style>
@@ -301,6 +349,25 @@
                 </div>
 
                 <button class="btn-reset" id="reset-btn">new image</button>
+            </div>
+
+            <div class="about-slider">
+                <button class="slider-btn" id="prev-btn">←</button>
+                <div class="slider-wrap">
+                    <div class="slide active">
+                        <div class="panel-label">About the project</div>
+                        <p>This project explores automatic classification of architectural styles using convolutional neural networks. The task is non-trivial — style boundaries are blurry, the same building looks different depending on angle and lighting, and street photos add noise and occlusions.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="panel-label">Method</div>
+                        <p>Four CNN architectures were compared using transfer learning on the Architectural Styles Dataset — 9,761 images across 24 classes. Models were trained with data augmentation, L2 regularization, and early stopping.</p>
+                    </div>
+                    <div class="slide">
+                        <div class="panel-label">Results</div>
+                        <p>ConvNeXt-Tiny achieved the best result at 78.09% accuracy, outperforming the baseline ResNet50 by ~3%. The hardest classes — Edwardian, Bauhaus, Beaux-Arts — share visual elements across styles, making them objectively difficult to distinguish.</p>
+                    </div>
+                </div>
+                <button class="slider-btn" id="next-btn">→</button>
             </div>
         </div>
 
@@ -410,6 +477,20 @@
             idleState.style.display = 'flex';
             fileInput.value = '';
         });
+
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        let currentSlide = 0;
+
+        function goToSlide(index) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (index + slides.length) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }
+
+        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
     </script>
 </body>
 </html>
