@@ -55,6 +55,7 @@
         main {
             display: grid;
             grid-template-columns: 1fr 1fr;
+            min-height: 100vh;
         }
 
         .panel-left {
@@ -265,50 +266,104 @@
             font-family: 'DM Mono', monospace;
         }
 
-        .about-slider {
+        .research {
             border-top: 1px solid var(--border);
-            padding: 40px;
+            padding: 80px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px 80px;
+        }
+
+        .research-block {
             display: flex;
-            align-items: center;
-            gap: 24px;
+            flex-direction: column;
+            gap: 16px;
         }
 
-        .slider-wrap {
-            flex: 1;
-            overflow: hidden;
+        .research-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            font-weight: normal;
         }
 
-        .slide {
-            display: none;
+        .research-text {
+            font-size: 0.8rem;
+            line-height: 1.9;
+            color: var(--muted);
         }
 
-        .slide.active {
-            display: block;
-        }
-
-        .slide p {
-            font-size: 0.85rem;
-            line-height: 1.8;
-            color: var(--text);
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
             margin-top: 10px;
         }
 
-        .slider-btn {
-            background: none;
-            border: 1px solid var(--border);
+        .results-table th {
+            text-align: left;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
             color: var(--muted);
-            font-family: 'DM Mono', monospace;
-            font-size: 1rem;
-            padding: 10px 16px;
-            cursor: pointer;
-            border-radius: 2px;
-            transition: border-color 0.2s, color 0.2s;
-            flex-shrink: 0;
+            padding: 0 0 12px 0;
+            border-bottom: 1px solid var(--border);
         }
 
-        .slider-btn:hover {
-            border-color: var(--accent2);
+        .results-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .results-table td:first-child {
             color: var(--text);
+        }
+
+        .best-row td {
+            color: var(--accent) !important;
+        }
+
+        .insights-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .insight-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-left: 12px;
+            border-left: 1px solid var(--border);
+        }
+
+        .insight-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        .scroll-hint {
+            margin-top: auto;
+            align-self: flex-start;
+            font-size: 0.62rem;
+            color: var(--muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.2s;
+            animation: bounce 2s infinite;
+        }
+
+        .scroll-hint:hover {
+            color: var(--accent);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(4px); }
         }
 
     </style>
@@ -350,28 +405,97 @@
 
                 <button class="btn-reset" id="reset-btn">new image</button>
             </div>
-
-            <div class="about-slider">
-                <button class="slider-btn" id="prev-btn">←</button>
-                <div class="slider-wrap">
-                    <div class="slide active">
-                        <div class="panel-label">About the project</div>
-                        <p>This project explores automatic classification of architectural styles using convolutional neural networks. The task is non-trivial — style boundaries are blurry, the same building looks different depending on angle and lighting, and street photos add noise and occlusions.</p>
-                    </div>
-                    <div class="slide">
-                        <div class="panel-label">Method</div>
-                        <p>Four CNN architectures were compared using transfer learning on the Architectural Styles Dataset — 9,761 images across 24 classes. Models were trained with data augmentation, L2 regularization, and early stopping.</p>
-                    </div>
-                    <div class="slide">
-                        <div class="panel-label">Results</div>
-                        <p>ConvNeXt-Tiny achieved the best result at 78.09% accuracy, outperforming the baseline ResNet50 by ~3%. The hardest classes — Edwardian, Bauhaus, Beaux-Arts — share visual elements across styles, making them objectively difficult to distinguish.</p>
-                    </div>
-                </div>
-                <button class="slider-btn" id="next-btn">→</button>
-            </div>
+            <a class="scroll-hint" href="#research">
+                ↓ research
+            </a>
         </div>
 
     </main>
+
+    <section class="research" id="research">
+        <div class="research-block">
+            <h2 class="research-title">What is the challenge?</h2>
+            <p class="research-text">Architectural style classification is challenging because of few reasons. Style boundaries are blurry — styles evolved gradually and borrowed elements from each other. Some styles have high intra-class variations: from small living house to large government buildings. Street photos add noise, shadows, and occlusions.</p>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">Approach</h2>
+            <p class="research-text">
+                Architectural Styles Dataset — 9,761 images across 24 classes. 
+                Four CNN architectures were trained using transfer learning on 
+                ImageNet weights: ResNet18, ResNet50, EfficientNet-B0, and ConvNeXt-Tiny. 
+                Training included data augmentation, L2 regularization, and early stopping. 
+                Each model was run three times — results are averaged for stability.
+            </p>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">Model Comparison</h2>
+            <table class="results-table">
+                <thead>
+                <tr>
+                    <th>Model</th>
+                    <th>Accuracy</th>
+                    <th>F1-score</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="best-row">
+                    <td>ConvNeXt-Tiny</td>
+                    <td>78.09%</td>
+                    <td>77.95%</td>
+                </tr>
+                <tr>
+                    <td>ResNet50</td>
+                    <td>75.15%</td>
+                    <td>75.35%</td>
+                </tr>
+                <tr>
+                    <td>EfficientNet-B0</td>
+                    <td>72.63%</td>
+                    <td>72.64%</td>
+                </tr>
+                <tr>
+                    <td>ResNet18</td>
+                    <td>73.04%</td>
+                    <td>72.95%</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">What are the insights?</h2>
+            <div class="insights-list">
+                <div class="insight-item">
+                <span class="insight-label">Best performing</span>
+                <p class="research-text">Styles with distinctive visual features — Achaemenid, Ancient Egyptian, Gothic — achieved F1 above 0.86. Minimal overlap with other styles makes them easier to classify.</p>
+                </div>
+                <div class="insight-item">
+                <span class="insight-label">Hardest to classify</span>
+                <p class="research-text">Edwardian, Bauhaus, and Beaux-Arts showed the lowest F1. High intra-class variability and shared visual elements with neighboring styles make them objectively difficult.</p>
+                </div>
+                <div class="insight-item">
+                <span class="insight-label">Confusion patterns</span>
+                <p class="research-text">Biggest confusion between International and Bauhaus (19 errors) and Palladian and Georgian (15 errors) — historically related styles with similar visual language.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">Limitations & Future Work</h2>
+            <div class="insights-list">
+                <div class="insight-item">
+                <span class="insight-label">Limitations</span>
+                <p class="research-text">Class imbalance — Queen Anne has 503 training samples, Chicago School only 194. High intra-class variability within some styles. Dataset bias toward certain regions and eras.</p>
+                </div>
+                <div class="insight-item">
+                <span class="insight-label">Future Work</span>
+                <p class="research-text">Separate hyperparameter tuning per architecture. Larger and more balanced dataset. Exploring transformer-based models such as Vision Transformer for comparison.</p>
+                </div>
+            </div>
+        </div>
+    </section>
 
     <footer>
         <span >Convolutional Neural Networks for Architectural Style Recognition · Bachelor's 3rd year thesis · Kyiv, 2026</span>
@@ -477,20 +601,6 @@
             idleState.style.display = 'flex';
             fileInput.value = '';
         });
-
-        const slides = document.querySelectorAll('.slide');
-        const prevBtn = document.getElementById('prev-btn');
-        const nextBtn = document.getElementById('next-btn');
-        let currentSlide = 0;
-
-        function goToSlide(index) {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (index + slides.length) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }
-
-        prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-        nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
-    </script>
+       </script>
 </body>
 </html>
