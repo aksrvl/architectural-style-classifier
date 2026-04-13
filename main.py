@@ -47,3 +47,8 @@ async def predict_endpoint(file: UploadFile = File(...)):
 @app.get("/health")
 async def health():
     return {"status": "ok", "model": MODEL_NAME}
+
+@app.get("/research")
+async def research():
+    html = Path("static/research.html").read_text(encoding="utf-8")
+    return HTMLResponse(content=html)

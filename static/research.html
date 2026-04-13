@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research · Architectural Style Classifier</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg:      #0d0d0d;
+            --surface: #141414;
+            --border:  #2a2a2a;
+            --text:    #e8e4dc;
+            --muted:   #555;
+            --accent:  #c8b89a;
+            --accent2: #8a7a66;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Mono', monospace;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            align-items: baseline;
+            gap: 16px;
+            position: sticky;
+            top: 0;
+            background: var(--bg);
+            z-index: 10;
+        }
+
+        .logo {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.1rem;
+        }
+
+        .logo-tag {
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        nav {
+            margin-left: auto;
+            display: flex;
+            gap: 24px;
+        }
+
+        .nav-link {
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover { color: var(--text); }
+        .nav-link.active { color: var(--accent); }
+
+        main {
+            padding: 80px 40px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px 80px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .research-block {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .panel-label {
+            font-size: 0.6rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+
+        .research-title {
+            font-family: 'DM Serif Display', serif;
+            font-size: 1.8rem;
+            line-height: 1.2;
+            font-weight: normal;
+        }
+
+        .research-text {
+            font-size: 0.8rem;
+            line-height: 1.9;
+            color: var(--muted);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.8rem;
+            margin-top: 10px;
+        }
+
+        .results-table th {
+            text-align: left;
+            font-size: 0.6rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding: 0 0 12px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .results-table td {
+            padding: 12px 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--muted);
+        }
+
+        .results-table td:first-child {
+            color: var(--text);
+        }
+
+        .best-row td {
+            color: var(--accent) !important;
+        }
+
+        .insights-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .insight-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-left: 12px;
+            border-left: 1px solid var(--border);
+        }
+
+        .insight-label {
+            font-size: 0.65rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        footer {
+            border-top: 1px solid var(--border);
+            padding: 20px 40px;
+            display: flex;
+            align-items: center;
+            font-size: 0.65rem;
+            color: var(--muted);
+            letter-spacing: 0.05em;
+        }
+
+        .nav-link.demo-btn {
+            font-size: 0.8rem;
+            color: var(--muted);
+            letter-spacing: 0.15em;
+            text-decoration: none;
+            transition: color 0.3s;
+            animation: drift-back 3s ease-in-out infinite;
+        }
+
+        .nav-link.demo-btn:hover {
+            color: var(--accent);
+        }
+
+        @keyframes drift-back {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(-6px); }
+        }
+
+        .back-btn-wrap {
+        grid-column: 1 / -1;
+        margin-bottom: 20px;
+    }
+    
+    </style>
+</head>
+<body>
+    <header>
+        <span class="logo">Architectural Style Classifier</span>
+        <span class="logo-tag">· Polina Vladymyrska · Kyiv-Mohyla Academy · CNN</span>
+        <nav class="nav">
+            <a href="/" class="nav-link">Demo</a>
+            <a href="/research" class="nav-link active">Research</a>
+        </nav>
+    </header>
+
+    <main>
+        <div class="back-btn-wrap">
+            <a href="/" class="nav-link demo-btn">← demo</a>
+        </div>
+        <div class="research-block">
+            <h2 class="research-title">What is the challenge?</h2>
+            <p class="research-text">Architectural style classification is challenging for a few reasons. Style boundaries are blurry — styles evolved gradually and borrowed elements from each other. Some styles have high intra-class variation: from small living houses to large government buildings. Street photos add noise, shadows, and occlusions.</p>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">Dataset & Method</h2>
+            <p class="research-text">Architectural Styles Dataset — 9,761 images across 24 classes. Four CNN architectures were trained using transfer learning on ImageNet weights: ResNet18, ResNet50, EfficientNet-B0, and ConvNeXt-Tiny. Training included data augmentation, L2 regularization, and early stopping. Each model was run three times — results are averaged for stability.</p>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">Model Comparison</h2>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th>Model</th>
+                        <th>Accuracy</th>
+                        <th>F1-score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="best-row">
+                        <td>ConvNeXt-Tiny</td>
+                        <td>78.09%</td>
+                        <td>77.95%</td>
+                    </tr>
+                    <tr>
+                        <td>ResNet50</td>
+                        <td>75.15%</td>
+                        <td>75.35%</td>
+                    </tr>
+                    <tr>
+                        <td>ResNet18</td>
+                        <td>73.04%</td>
+                        <td>72.95%</td>
+                    </tr>
+                    <tr>
+                        <td>EfficientNet-B0</td>
+                        <td>72.63%</td>
+                        <td>72.64%</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">What are the insights?</h2>
+            <div class="insights-list">
+                <div class="insight-item">
+                    <span class="insight-label">Best performing</span>
+                    <p class="research-text">Styles with distinctive visual features — Achaemenid, Ancient Egyptian, Gothic — achieved F1 above 0.86. Minimal overlap with other styles makes them easier to classify.</p>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-label">Hardest to classify</span>
+                    <p class="research-text">Edwardian, Bauhaus, and Beaux-Arts showed the lowest F1. High intra-class variability and shared visual elements with neighboring styles make them objectively difficult.</p>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-label">Confusion patterns</span>
+                    <p class="research-text">Biggest confusion between International and Bauhaus (19 errors) and Palladian and Georgian (15 errors) — historically related styles with similar visual language.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="research-block">
+            <h2 class="research-title">Limitations & Future Work</h2>
+            <div class="insights-list">
+                <div class="insight-item">
+                    <span class="insight-label">Limitations</span>
+                    <p class="research-text">Class imbalance — Queen Anne has 503 training samples, Chicago School only 194. High intra-class variability within some styles. Dataset bias toward certain regions and eras.</p>
+                </div>
+                <div class="insight-item">
+                    <span class="insight-label">Future Work</span>
+                    <p class="research-text">Separate hyperparameter tuning per architecture. Larger and more balanced dataset. Exploring transformer-based models such as Vision Transformer for comparison.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        Convolutional Neural Networks for Architectural Style Recognition · Bachelor's 3rd year thesis · Kyiv, 2026
+    </footer>
+</body>
+</html>
