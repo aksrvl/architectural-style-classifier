@@ -1,3 +1,12 @@
+---
+title: Architectural Style Classifier
+emoji: 🏛
+colorFrom: gray
+colorTo: gray
+sdk: docker
+pinned: false
+---
+
 # Architectural Style Classifier
 
 CNN-based web app for classifying architectural styles from building photos — comparing four deep learning architectures across 24 style categories.
